@@ -23,14 +23,14 @@ Repositório com as entregas do desafio técnico de QA Júnior da Verzel (card *
 
 ## 1. Onde encontrar cada entrega
 
-| Entrega                                                                     | Onde encontrar                                                                                                                                        |
-| --------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Cenários de teste levantados a partir da documentação (Gherkin)             | Planilha, aba **Cenários** e **Casos de testes**                                                                                                      |
-| Execução dos testes (manuais e exploratórios) com resultado de cada cenário | Planilha, aba **Casos de testes**                                                                                                                     |
-| Report de todos os bugs encontrados                                         | Planilha, aba **Report de bugs**                                                                                                                      |
-| Documento com as evidências da execução                                     | Planilha (aba **Casos de testes**) e [pasta no Google Drive](https://drive.google.com/drive/folders/11PAvMcbRqC3RZSAfBd8ZxyPnOts4AivL?usp=drive_link) |
-| Automação de pelo menos 3 cenários com Playwright                           | Pasta Automação/qa-test-verzel/tests                                                                                                                  |
-| README explicando como rodar a automação                                    | Este arquivo                                                                                                                                          |
+| Entrega                                                         | Onde encontrar                                                                                                                                        |
+| --------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Cenários de teste levantados a partir da documentação (Gherkin) | Planilha, aba **Cenários** e **Casos de testes**                                                                                                      |
+| Execução dos testes com resultado de cada cenário               | Planilha, aba **Casos de testes**                                                                                                                     |
+| Report de todos os bugs encontrados                             | Planilha, aba **Report de bugs**                                                                                                                      |
+| Documento com as evidências da execução                         | Planilha (aba **Casos de testes**) e [pasta no Google Drive](https://drive.google.com/drive/folders/11PAvMcbRqC3RZSAfBd8ZxyPnOts4AivL?usp=drive_link) |
+| Automação de pelo menos 3 cenários com Playwright               | Pasta Automação/qa-test-verzel/tests                                                                                                                  |
+| README explicando como rodar a automação                        | Este arquivo                                                                                                                                          |
 
 ---
 
