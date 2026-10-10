@@ -1,0 +1,657 @@
+{
+	"info": {
+		"_postman_id": "13e41be8-69da-478c-b0af-3582efd38664",
+		"name": "qa_test_Verzel",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "58849731",
+		"_collection_link": "https://victorcavalcante917-1975234.postman.co/workspace/victor-cavalcante's-Workspace~fd17e6f6-b98c-4870-8db6-3782ae6ec914/collection/58849731-13e41be8-69da-478c-b0af-3582efd38664?action=share&source=collection_link&creator=58849731"
+	},
+	"item": [
+		{
+			"name": "Cenário - Consultar produtos",
+			"item": [
+				{
+					"name": "Listar todos os produtos cadastrados",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://verzel-store.qa-test-verzel-store.workers.dev/api/produtos",
+							"protocol": "https",
+							"host": [
+								"verzel-store",
+								"qa-test-verzel-store",
+								"workers",
+								"dev"
+							],
+							"path": [
+								"api",
+								"produtos"
+							]
+						},
+						"description": "```\nCenário: Listar todos os produtos cadastrados\n  Dado que existem produtos cadastrados no sistema\n  Quando o usuário solicita a listagem de produtos pelo endpoint GET \"/api/produtos\"\n  Então o sistema deve retornar o código de status HTTP 200\n  E deve retornar uma lista contendo os produtos cadastrados\n  E cada produto deve conter os campos \"id\", \"nome\", \"descricao\", \"categoria\" e \"preco\"\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "Cenário Sucesso - Consultar produto por ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://verzel-store.qa-test-verzel-store.workers.dev/api/produtos/P001",
+							"protocol": "https",
+							"host": [
+								"verzel-store",
+								"qa-test-verzel-store",
+								"workers",
+								"dev"
+							],
+							"path": [
+								"api",
+								"produtos",
+								"P001"
+							]
+						},
+						"description": "```\nCenário: Consultar um produto pelo ID\n  Dado que existe um produto cadastrado com o ID \"P001\"\n  Quando o usuário solicita a consulta pelo endpoint GET \"/api/produtos/P001\"\n  Então o sistema deve retornar o código de status HTTP 200\n  E deve retornar os dados do produto com ID \"P001\"\n  E o produto deve conter os campos \"id\", \"nome\", \"descricao\", \"categoria\" e \"preco\"\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "Cenário Fracasso - Consultar produto por ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://verzel-store.qa-test-verzel-store.workers.dev/api/produtos/P999",
+							"protocol": "https",
+							"host": [
+								"verzel-store",
+								"qa-test-verzel-store",
+								"workers",
+								"dev"
+							],
+							"path": [
+								"api",
+								"produtos",
+								"P999"
+							]
+						},
+						"description": "```\nCenário: Consultar um produto que não existe\n  Dado que não existe um produto cadastrado com o ID \"P999\"\n  Quando o usuário solicita a consulta pelo endpoint GET \"/api/produtos/P999\"\n  Então o sistema deve retornar o código de status HTTP 404\n\n ```"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Cenário - Função Calcular",
+			"item": [
+				{
+					"name": "Calcular carrinho com cupom válido",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"itens\": [\n    { \"produtoId\": \"P002\", \"quantidade\": 1 },\n    { \"produtoId\": \"P004\", \"quantidade\": 2 }\n  ],\n  \"cupom\": \"BEMVINDO10\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://verzel-store.qa-test-verzel-store.workers.dev/api/carrinho/calcular",
+							"protocol": "https",
+							"host": [
+								"verzel-store",
+								"qa-test-verzel-store",
+								"workers",
+								"dev"
+							],
+							"path": [
+								"api",
+								"carrinho",
+								"calcular"
+							]
+						},
+						"description": "``` gherkin\nCenário: Calcular o carrinho com um cupom válido\n  Dado que os produtos \"P002\" e \"P004\" estão cadastrados\n  E o cupom \"BEMVINDO10\" é válido e concede 10% de desconto nos produtos\n  Quando o usuário envia uma requisição POST para \"/api/carrinho/calcular\"\n  Com o produto \"P002\" na quantidade 1\n  E o produto \"P004\" na quantidade 2\n  E informa o cupom \"BEMVINDO10\"\n  Então o sistema deve retornar o código de status HTTP 200\n  E deve retornar o subtotal de 239.70\n  E deve retornar o desconto de 23.97\n  E deve retornar o frete igual a 0\n  E deve indicar que o frete grátis foi concedido\n  E deve retornar o valor faltante para frete grátis igual a 0\n  E deve retornar o total de 215.73\n  E deve indicar que o cupom foi aplicado\n  E deve informar a mensagem \"Cupom aplicado: 10% de desconto nos produtos.\"\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "Calcular carrinho sem informar cupom",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"itens\": [\n    { \"produtoId\": \"P002\", \"quantidade\": 1 },\n    { \"produtoId\": \"P004\", \"quantidade\": 2 }\n  ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://verzel-store.qa-test-verzel-store.workers.dev/api/carrinho/calcular",
+							"protocol": "https",
+							"host": [
+								"verzel-store",
+								"qa-test-verzel-store",
+								"workers",
+								"dev"
+							],
+							"path": [
+								"api",
+								"carrinho",
+								"calcular"
+							]
+						},
+						"description": "``` gherkin\nCenário: Calcular o carrinho sem informar um cupom\n  Dado que os produtos \"P002\" e \"P004\" estão cadastrados\n  Quando o usuário envia uma requisição POST para \"/api/carrinho/calcular\"\n  Com o produto \"P002\" na quantidade 1\n  E o produto \"P004\" na quantidade 2\n  E não informa o campo \"cupom\"\n  Então o sistema deve retornar o código de status HTTP 200\n  E deve retornar o subtotal correspondente aos itens\n  E deve calcular o total sem desconto de cupom\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "Calcular o carrinho com um cupom inválido",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"itens\": [\n    { \"produtoId\": \"P002\", \"quantidade\": 1 },\n    { \"produtoId\": \"P004\", \"quantidade\": 2 }\n  ],\n  \"cupom\":\"CUPOMINVALIDO\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://verzel-store.qa-test-verzel-store.workers.dev/api/carrinho/calcular",
+							"protocol": "https",
+							"host": [
+								"verzel-store",
+								"qa-test-verzel-store",
+								"workers",
+								"dev"
+							],
+							"path": [
+								"api",
+								"carrinho",
+								"calcular"
+							]
+						},
+						"description": "``` gherkin\nCenário: Calcular o carrinho com um cupom inválido\n  Dado que os produtos \"P002\" e \"P004\" estão cadastrados\n  E o cupom \"CUPOMINVALIDO\" é inválido\n  Quando o usuário envia uma requisição POST para \"/api/carrinho/calcular\"\n  Com o produto \"P002\" na quantidade 1\n  E o produto \"P004\" na quantidade 2\n  E informa o cupom \"CUPOMINVALIDO\"\n  Então o sistema deve retornar o código de status HTTP 200\n  E deve retornar o desconto igual a 0\n  E deve calcular o total sem desconto de cupom\n  E deve indicar que o cupom não foi aplicado\n  E deve informar o motivo da não aplicação em \"cupom.mensagem\"\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "Calcular o carrinho com um cupom expirado",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"itens\": [\n    { \"produtoId\": \"P002\", \"quantidade\": 1 },\n    { \"produtoId\": \"P004\", \"quantidade\": 2 }\n  ],\n  \"cupom\":\"VERAO2026\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://verzel-store.qa-test-verzel-store.workers.dev/api/carrinho/calcular",
+							"protocol": "https",
+							"host": [
+								"verzel-store",
+								"qa-test-verzel-store",
+								"workers",
+								"dev"
+							],
+							"path": [
+								"api",
+								"carrinho",
+								"calcular"
+							]
+						},
+						"description": "``` gherkin\nCenário: Calcular o carrinho com um cupom expirado\n  Dado que os produtos \"P002\" e \"P004\" estão cadastrados\n  E o cupom \"VERAO2026\" está expirado\n  Quando o usuário envia uma requisição POST para \"/api/carrinho/calcular\"\n  Com o produto \"P002\" na quantidade 1\n  E o produto \"P004\" na quantidade 2\n  E informa o cupom \"VERAO2026\"\n  Então o sistema deve retornar o código de status HTTP 200\n  E deve retornar o desconto igual a 0\n  E deve calcular o total sem desconto de cupom\n  E deve indicar que o cupom não foi aplicado\n  E deve informar o motivo da expiração em \"cupom.mensagem\"\n\n ```"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Cenário - Confirmar pedido",
+			"item": [
+				{
+					"name": "Confirmar pedido com cupom válido",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"cliente\": {\n    \"nome\": \"Victor Ravel\",\n    \"email\": \"victor@exemplo.com\",\n    \"cep\": \"01310-100\"\n  },\n  \"itens\": [\n    { \"produtoId\": \"P005\", \"quantidade\": 1 }\n  ],\n  \"cupom\": \"BEMVINDO10\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://verzel-store.qa-test-verzel-store.workers.dev/api/pedidos",
+							"protocol": "https",
+							"host": [
+								"verzel-store",
+								"qa-test-verzel-store",
+								"workers",
+								"dev"
+							],
+							"path": [
+								"api",
+								"pedidos"
+							]
+						},
+						"description": "``` gherkin\nCenário: Confirmar um pedido com um cupom válido\n  Dado que o produto \"P005\" está cadastrado e custa R$ 100,00\n  E o cliente informa nome, e-mail e CEP válidos\n  E o cupom \"BEMVINDO10\" é válido e concede 10% de desconto nos produtos\n  Quando o cliente envia uma requisição POST para \"/api/pedidos\"\n  Com os dados do cliente \"Victor Ravel\", \"Victor@exemplo.com\" e \"01310-100\"\n  E solicita 1 unidade do produto \"P005\"\n  E informa o cupom \"BEMVINDO10\"\n  Então o sistema deve retornar o código de status HTTP 201\n  E deve retornar o número do pedido no formato \"VZ-000000\"\n  E deve retornar a data e hora de criação do pedido\n  E deve retornar os dados do cliente informado\n  E deve retornar o subtotal de R$ 100,00\n  E deve retornar o desconto de R$ 10,00\n  E deve retornar o frete de R$ 19,90\n  E deve indicar que o frete grátis não foi concedido\n  E deve retornar o valor faltante para frete grátis de R$ 100,00\n  E deve retornar o total de R$ 109,90\n  E deve indicar que o cupom foi aplicado\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "Confirmar um pedido sem cupom",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"cliente\": {\n    \"nome\": \"VICTOR RAVEL\",\n    \"email\": \"VICTOR@exemplo.com\",\n    \"cep\": \"01310-100\"\n  },\n  \"itens\": [\n    { \"produtoId\": \"P005\", \"quantidade\": 1 }\n  ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://verzel-store.qa-test-verzel-store.workers.dev/api/pedidos",
+							"protocol": "https",
+							"host": [
+								"verzel-store",
+								"qa-test-verzel-store",
+								"workers",
+								"dev"
+							],
+							"path": [
+								"api",
+								"pedidos"
+							]
+						},
+						"description": "``` gherkin\nCenário: Confirmar um pedido sem cupom\n  Dado que o produto \"P005\" está cadastrado e disponível\n  E o cliente informa nome, e-mail e CEP válidos\n  Quando o cliente envia uma requisição POST para \"/api/pedidos\"\n  Com os dados válidos do cliente\n  E solicita 1 unidade do produto \"P005\"\n  E não informa o campo \"cupom\"\n  Então o sistema deve retornar o código de status HTTP 201\n  E deve retornar o número do pedido no formato \"VZ-000000\"\n  E deve retornar o resumo dos valores do pedido\n  E deve calcular o total sem desconto de cupom\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "Tentar confirmar um pedido com um cupom inexistente",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"cliente\": {\n    \"nome\": \"Victor Ravel\",\n    \"email\": \"Victor@exemplo.com\",\n    \"cep\": \"01310-100\"\n  },\n  \"itens\": [\n    { \"produtoId\": \"P005\", \"quantidade\": 1 }\n  ],\n  \"cupom\": \"CUPOMINVALIDO\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://verzel-store.qa-test-verzel-store.workers.dev/api/pedidos",
+							"protocol": "https",
+							"host": [
+								"verzel-store",
+								"qa-test-verzel-store",
+								"workers",
+								"dev"
+							],
+							"path": [
+								"api",
+								"pedidos"
+							]
+						},
+						"description": "``` gherkin\nCenário: Tentar confirmar um pedido com um cupom inexistente\n  Dado que o produto \"P005\" está cadastrado e disponível\n  E o cliente informa dados válidos\n  E o cupom \"CUPOMINVALIDO\" não existe no sistema\n  Quando o cliente envia uma requisição POST para \"/api/pedidos\"\n  Com os dados válidos do cliente\n  E solicita 1 unidade do produto \"P005\"\n  E informa o cupom \"CUPOMINVALIDO\"\n  Então o sistema deve retornar o código de status HTTP 422\n  E deve retornar o código de erro \"CUPOM_INVALIDO\"\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "Tentar confirmar um pedido com um cupom expirado",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"cliente\": {\n    \"nome\": \"Victor Ravel\",\n    \"email\": \"victor@exemplo.com\",\n    \"cep\": \"01310-100\"\n  },\n  \"itens\": [\n    { \"produtoId\": \"P005\", \"quantidade\": 1 }\n  ],\n  \"cupom\": \"VERAO2026\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://verzel-store.qa-test-verzel-store.workers.dev/api/pedidos",
+							"protocol": "https",
+							"host": [
+								"verzel-store",
+								"qa-test-verzel-store",
+								"workers",
+								"dev"
+							],
+							"path": [
+								"api",
+								"pedidos"
+							]
+						},
+						"description": "``` gherkin\nCenário: Tentar confirmar um pedido com um cupom expirado\n  Dado que o produto \"P005\" está cadastrado e disponível\n  E o cliente informa dados válidos\n  E o cupom \"VERAO2026\" está fora do período de validade\n  Quando o cliente envia uma requisição POST para \"/api/pedidos\"\n  Com os dados válidos do cliente\n  E solicita 1 unidade do produto \"P005\"\n  E informa o cupom \"VERAO2026\"\n  Então o sistema deve retornar o código de status HTTP 422\n  E deve retornar o código de erro \"CUPOM_EXPIRADO\"\n\n ```"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Cenário - Códigos de erro",
+			"item": [
+				{
+					"name": "Enviar uma requisição com corpo JSON inválido",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"cliente\": {\n    \"nome\": \"Maria Silva\",\n    \"email\": \"maria@exemplo.com\",\n    \"cep\": \"01310-100\"\n  },\n  \"itens\": [\n    { [] }\n  ],\n  \"cupom\": \"BEMVINDO10\"\n}"
+						},
+						"url": {
+							"raw": "https://verzel-store.qa-test-verzel-store.workers.dev/api/pedidos",
+							"protocol": "https",
+							"host": [
+								"verzel-store",
+								"qa-test-verzel-store",
+								"workers",
+								"dev"
+							],
+							"path": [
+								"api",
+								"pedidos"
+							]
+						},
+						"description": "``` gherkin\nCenário: Enviar uma requisição com corpo JSON inválido\n  Dado que o cliente prepara uma requisição para criar um pedido\n  E o corpo da requisição não contém um objeto JSON válido\n  Quando o cliente envia uma requisição POST para \"/api/pedidos\"\n  Então o sistema deve retornar o código de status HTTP 400\n  E deve retornar o código de erro \"JSON_INVALIDO\"\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "Acessar uma rota inexistente",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"cliente\": {\n    \"nome\": \"Maria Silva\",\n    \"email\": \"maria@exemplo.com\",\n    \"cep\": \"01310-100\"\n  },\n  \"itens\": [\n     { \"produtoId\": \"P005\", \"quantidade\": 1}\n  ],\n  \"cupom\": \"BEMVINDO10\"\n}"
+						},
+						"url": {
+							"raw": "https://verzel-store.qa-test-verzel-store.workers.dev/api/rota-inexistente",
+							"protocol": "https",
+							"host": [
+								"verzel-store",
+								"qa-test-verzel-store",
+								"workers",
+								"dev"
+							],
+							"path": [
+								"api",
+								"rota-inexistente"
+							]
+						},
+						"description": "``` gherkin\nCenário: Acessar uma rota inexistente\n  Dado que a rota \"/api/rota-inexistente\" não existe\n  Quando o cliente envia uma requisição GET para \"/api/rota-inexistente\"\n  Então o sistema deve retornar o código de status HTTP 404\n  E deve retornar o código de erro \"ROTA_NAO_ENCONTRADA\"\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "Tentar confirmar um pedido sem itens",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"cliente\": {\n    \"nome\": \"Maria Silva\",\n    \"email\": \"maria@exemplo.com\",\n    \"cep\": \"01310-100\"\n  },\n\"itens\": [\n\n  ],\n  \"cupom\": \"BEMVINDO10\"\n}"
+						},
+						"url": {
+							"raw": "https://verzel-store.qa-test-verzel-store.workers.dev/api/pedidos",
+							"protocol": "https",
+							"host": [
+								"verzel-store",
+								"qa-test-verzel-store",
+								"workers",
+								"dev"
+							],
+							"path": [
+								"api",
+								"pedidos"
+							]
+						},
+						"description": "``` gherkin\nTentar confirmar um pedido sem itens\n  Dado que o cliente informa dados válidos\n  Quando envia uma requisição POST para \"/api/pedidos\" com a lista de itens vazia\n  Então o sistema deve retornar o código de status HTTP 422\n  E deve retornar o código de erro \"ITENS_OBRIGATORIOS\"\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "Confirmar um pedido com um produto inexistente",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"cliente\": {\n    \"nome\": \"Maria Silva\",\n    \"email\": \"maria@exemplo.com\",\n    \"cep\": \"01310-100\"\n  },\n\"itens\": [\n{ \"produtoId\": \"P999\", \"quantidade\": 1 }\n  ],\n  \"cupom\": \"BEMVINDO10\"\n}"
+						},
+						"url": {
+							"raw": "https://verzel-store.qa-test-verzel-store.workers.dev/api/pedidos",
+							"protocol": "https",
+							"host": [
+								"verzel-store",
+								"qa-test-verzel-store",
+								"workers",
+								"dev"
+							],
+							"path": [
+								"api",
+								"pedidos"
+							]
+						},
+						"description": "``` gherkin\nCenário: Confirmar um pedido com um produto inexistente\n  Dado que o cliente informa dados válidos\n  E não existe um produto cadastrado com o ID \"P999\"\n  Quando envia uma requisição POST para \"/api/pedidos\"\n  Com o produto \"P999\" na quantidade 1\n  Então o sistema deve retornar o código de status HTTP 422\n  E deve retornar o código de erro \"PRODUTO_NAO_ENCONTRADO\"\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "Confirmar um pedido com o mesmo produto repetido na lista",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"cliente\": {\n    \"nome\": \"Maria Silva\",\n    \"email\": \"maria@exemplo.com\",\n    \"cep\": \"01310-100\"\n  },\n\"itens\": [\n{ \"produtoId\": \"P005\", \"quantidade\": 1}, \n{\"produtoId\": \"P005\", \"quantidade\": 2 }\n  ],\n  \"cupom\": \"BEMVINDO10\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://verzel-store.qa-test-verzel-store.workers.dev/api/pedidos",
+							"protocol": "https",
+							"host": [
+								"verzel-store",
+								"qa-test-verzel-store",
+								"workers",
+								"dev"
+							],
+							"path": [
+								"api",
+								"pedidos"
+							]
+						},
+						"description": "``` gherkin\nCenário: Confirmar um pedido com o mesmo produto repetido na lista\n  Dado que o produto \"P005\" está cadastrado e disponível\n  E o cliente informa dados válidos\n  Quando envia uma requisição POST para \"/api/pedidos\"\n  Com o produto \"P005\" na quantidade 1\n  E adiciona novamente o produto \"P005\" na quantidade 2\n  Então o sistema deve retornar o código de status HTTP 422\n  E deve retornar o código de erro \"ITEM_DUPLICADO\"\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "Confirmar um pedido com quantidade inválida",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"cliente\": {\n    \"nome\": \"Maria Silva\",\n    \"email\": \"maria@exemplo.com\",\n    \"cep\": \"01310-100\"\n  },\n\"itens\": [\n{ \"produtoId\": \"P005\", \"quantidade\": 1.5}\n  ],\n  \"cupom\": \"BEMVINDO10\"\n}"
+						},
+						"url": {
+							"raw": "https://verzel-store.qa-test-verzel-store.workers.dev/api/pedidos",
+							"protocol": "https",
+							"host": [
+								"verzel-store",
+								"qa-test-verzel-store",
+								"workers",
+								"dev"
+							],
+							"path": [
+								"api",
+								"pedidos"
+							]
+						},
+						"description": "``` gherkin\nEsquema do Cenário: Confirmar um pedido com quantidade inválida\n  Dado que o produto \"P005\" está cadastrado e disponível\n  E o cliente informa dados válidos\n  Quando envia uma requisição POST para \"/api/pedidos\" com a quantidade <quantidade> para o produto \"P005\"\n  Então o sistema deve retornar o código de status HTTP 422\n  E deve retornar o código de erro \"QUANTIDADE_INVALIDA\"\nExemplos:\n  | quantidade |\n  | 0 |\n  | -1 |\n  | 1.5 |\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "Confirmar um pedido com quantidade superior ao limite permitido",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"cliente\": {\n    \"nome\": \"Maria Silva\",\n    \"email\": \"maria@exemplo.com\",\n    \"cep\": \"01310-100\"\n  },\n\"itens\": [\n{ \"produtoId\": \"P005\", \"quantidade\": 6}\n  ],\n  \"cupom\": \"BEMVINDO10\"\n}"
+						},
+						"url": {
+							"raw": "https://verzel-store.qa-test-verzel-store.workers.dev/api/pedidos",
+							"protocol": "https",
+							"host": [
+								"verzel-store",
+								"qa-test-verzel-store",
+								"workers",
+								"dev"
+							],
+							"path": [
+								"api",
+								"pedidos"
+							]
+						},
+						"description": "``` gherkin\nCenário: Confirmar um pedido com quantidade superior ao limite permitido\n  Dado que o produto \"P005\" está cadastrado e disponível\n  E o cliente informa dados válidos\n  Quando envia uma requisição POST para \"/api/pedidos\"\n  Com o produto \"P005\" na quantidade 6\n  Então o sistema deve retornar o código de status HTTP 422\n  E deve retornar o código de erro \"QUANTIDADE_MAXIMA_EXCEDIDA\"\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "Confirmar um pedido com dados inválidos do cliente",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"cliente\": {\n    \"nome\": \"\",\n    \"email\": \"VICTOR@exemplo\",\n    \"cep\": \"0131\"\n  },\n\"itens\": [\n{ \"produtoId\": \"P005\", \"quantidade\": 1}\n  ],\n  \"cupom\": \"BEMVINDO10\"\n}"
+						},
+						"url": {
+							"raw": "https://verzel-store.qa-test-verzel-store.workers.dev/api/pedidos",
+							"protocol": "https",
+							"host": [
+								"verzel-store",
+								"qa-test-verzel-store",
+								"workers",
+								"dev"
+							],
+							"path": [
+								"api",
+								"pedidos"
+							]
+						},
+						"description": "``` gherkin\nEsquema do Cenário: Confirmar um pedido com dados inválidos do cliente\n  Dado que o produto \"P005\" está cadastrado e disponível\n  E o cliente informa os seguintes dados: <campo> com o valor <valor>\n  Quando envia uma requisição POST para \"/api/pedidos\"\n  Com o produto \"P005\" na quantidade 1\n  Então o sistema deve retornar o código de status HTTP 422\n  E deve retornar o código de erro \"DADOS_INVALIDOS\"\n  E deve informar os detalhes da validação no campo \"campos\"\nExemplos:\n  | campo | valor |\n  | nome | vazio |\n  | email | email inválido |\n  | cep | CEP inválido |\n\n ```"
+					},
+					"response": []
+				},
+				{
+					"name": "Utilizar um método HTTP não permitido para uma rota existente",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://verzel-store.qa-test-verzel-store.workers.dev/api/produtos",
+							"protocol": "https",
+							"host": [
+								"verzel-store",
+								"qa-test-verzel-store",
+								"workers",
+								"dev"
+							],
+							"path": [
+								"api",
+								"produtos"
+							]
+						},
+						"description": "``` gherkin\nCenário: Utilizar um método HTTP não permitido para uma rota existente\n  Dado que a rota \"/api/produtos\" existe\n  E a rota não aceita o método HTTP DELETE\n  Quando o cliente envia uma requisição DELETE para \"/api/produtos\"\n  Então o sistema deve retornar o código de status HTTP 405\n  E deve retornar o código de erro \"METODO_NAO_PERMITIDO\"\n\n ```"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Cenário - Qtd Máxima de produtos",
+			"item": [
+				{
+					"name": "Cada produto pode ter no máximo 5 unidades por pedido",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"itens\": [\n    { \"produtoId\": \"P002\", \"quantidade\": 6 },\n    { \"produtoId\": \"P004\", \"quantidade\": 6 }\n  ]\n}"
+						},
+						"url": {
+							"raw": "https://verzel-store.qa-test-verzel-store.workers.dev/api/carrinho/calcular",
+							"protocol": "https",
+							"host": [
+								"verzel-store",
+								"qa-test-verzel-store",
+								"workers",
+								"dev"
+							],
+							"path": [
+								"api",
+								"carrinho",
+								"calcular"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
